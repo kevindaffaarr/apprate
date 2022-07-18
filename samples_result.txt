@@ -1,0 +1,164 @@
+==========
+REQUEST URL AND BODY
+==========
+
+curl -X 'POST' \
+  'http://127.0.0.1:8000/apprate' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"kodejenisagunan" : 1,
+	"kecamatan" : "Nabire",
+	"kota" : "Nabire",
+	"luas" : 150,
+	"luasbangunan" : 100,
+	"bentuk" : "Persegi Panjang",
+	"lebardepan" : 7,
+	"posisi" : "Tengah",
+	"kondisi" : "Tanah Matang/KSB",
+	"peruntukan" : "Pemukiman",
+	"elevasi" : "Sejajar Jalan",
+	"lebarjalan" : 5,
+	"jenislegal" : "SHM",
+	"jumlahlantai" : 1,
+	"kondisibangunan" : "Baik"
+}'
+
+==========
+RESPONSE HEADER AND BODY
+==========
+CODE
+200
+
+RESPONSE HEADER
+content-length: 2671 
+content-type: application/json 
+date: Mon,18 Jul 2022 11:45:09 GMT 
+server: uvicorn 
+
+RESPONSE BODY
+{
+  "asset_appraised_market_value": 1490291.477692379,
+  "dp_full": {
+    "20433403585dnfy01806": {
+      "kodejenisagunan": "1",
+      "jenisobjek": "Rumah Tinggal",
+      "luas": "1000",
+      "luasbangunan": "400",
+      "jarak": "-/+ 100 m",
+      "bentuk": "Persegi Panjang",
+      "lebardepan": 6,
+      "posisi": "Tengah",
+      "kondisi": "Tanah Matang/KSB",
+      "peruntukan": "Permukiman",
+      "elevasi": "Di Atas Jalan",
+      "lebarjalan": "-/+ 6 m",
+      "jenislegal": "SHM",
+      "jumlahlantai": "1",
+      "kondisibangunan": "Baik",
+      "desa": "Oyehe",
+      "kecamatan": "Nabire",
+      "kota": "Nabire",
+      "provinsi": "Papua",
+      "nilai_pm": "1640000",
+      "cosine_similarity": 0.7065112205310472,
+      "weight": 0.19961866054345917
+    },
+    "2043420358585kr01807": {
+      "kodejenisagunan": "1",
+      "jenisobjek": "Rumah Tinggal",
+      "luas": "1000",
+      "luasbangunan": "400",
+      "jarak": "-/+ 100 m",
+      "bentuk": "Persegi Panjang",
+      "lebardepan": 6,
+      "posisi": "Tengah",
+      "kondisi": "Tanah Matang/KSB",
+      "peruntukan": "Permukiman",
+      "elevasi": "Di Atas Jalan",
+      "lebarjalan": "-/+ 6 m",
+      "jenislegal": "SHM",
+      "jumlahlantai": "1",
+      "kondisibangunan": "Baik",
+      "desa": "Oyehe",
+      "kecamatan": "Nabire",
+      "kota": "Nabire",
+      "provinsi": "Papua",
+      "nilai_pm": "1740000",
+      "cosine_similarity": 0.7065112205310472,
+      "weight": 0.19961866054345917
+    },
+    "204347035851olo01808": {
+      "kodejenisagunan": "1",
+      "jenisobjek": "Rumah Tinggal",
+      "luas": "1000",
+      "luasbangunan": "400",
+      "jarak": "-/+ 100 m",
+      "bentuk": "Persegi Panjang",
+      "lebardepan": 6,
+      "posisi": "Tengah",
+      "kondisi": "Tanah Matang/KSB",
+      "peruntukan": "Permukiman",
+      "elevasi": "Di Atas Jalan",
+      "lebarjalan": "-/+ 6 m",
+      "jenislegal": "SHM",
+      "jumlahlantai": "1",
+      "kondisibangunan": "Baik",
+      "desa": "Oyehe",
+      "kecamatan": "Nabire",
+      "kota": "Nabire",
+      "provinsi": "Papua",
+      "nilai_pm": "1840000",
+      "cosine_similarity": 0.7065112205310472,
+      "weight": 0.19961866054345917
+    },
+    "20575014183cs5o02384": {
+      "kodejenisagunan": "1",
+      "jenisobjek": "Rumah Tinggal",
+      "luas": "500",
+      "luasbangunan": "250",
+      "jarak": "-/+ 100 m",
+      "bentuk": "Persegi Panjang",
+      "lebardepan": 6,
+      "posisi": "Tengah",
+      "kondisi": "Tanah Matang/KSB",
+      "peruntukan": "Permukiman",
+      "elevasi": "Di Atas Jalan",
+      "lebarjalan": "-/+ 5 m",
+      "jenislegal": "SHM",
+      "jumlahlantai": "1",
+      "kondisibangunan": "Sangat Baik",
+      "desa": "Oyehe",
+      "kecamatan": "Nabire",
+      "kota": "Nabire",
+      "provinsi": "Papua",
+      "nilai_pm": "780000",
+      "cosine_similarity": 0.7045685883017256,
+      "weight": 0.19906978653795612
+    },
+    "20491008311mcow01448": {
+      "kodejenisagunan": "1",
+      "jenisobjek": "Rumah Tinggal",
+      "luas": "1000",
+      "luasbangunan": "500",
+      "jarak": "-/+ 100 m",
+      "bentuk": "Persegi Panjang",
+      "lebardepan": 6,
+      "posisi": "Tengah",
+      "kondisi": "Tanah Matang/KSB",
+      "peruntukan": "Permukiman",
+      "elevasi": "Di Atas Jalan",
+      "lebarjalan": "-/+ 6 m",
+      "jenislegal": "SHM",
+      "jumlahlantai": "1",
+      "kondisibangunan": "Baik",
+      "desa": "Kali Susu",
+      "kecamatan": "Nabire",
+      "kota": "Nabire",
+      "provinsi": "Papua",
+      "nilai_pm": "1450000",
+      "cosine_similarity": 0.7152022350043886,
+      "weight": 0.20207423183166634
+    }
+  }
+}

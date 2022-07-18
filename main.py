@@ -1,7 +1,5 @@
 from fastapi import FastAPI, Response
-from numpy import full
 import database as db
-import json
 
 """
 =============================

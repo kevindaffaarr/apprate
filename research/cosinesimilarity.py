@@ -103,8 +103,6 @@ else:
 							LEFT JOIN temptable_legal ON appraisaltb.kodeappraisalTB = temptable_legal.kdappraisalTB
 							LEFT JOIN temptable_bangunan ON appraisaltb.kodeappraisalTB = temptable_bangunan.kdappraisalTB
 							LEFT JOIN temptable_dp ON appraisaltb.kodeappraisalTB = temptable_dp.kdappraisalTB
-							WHERE appraisaltb.statusorder = '4'
-
 	"""
 
 	object_full = pd.read_sql(OBJECT_FULL_SQL,DB_CON)
@@ -154,6 +152,10 @@ else:
 						appraisal_pembanding_tb.milik AS jenislegal,
 						appraisal_pembanding_tb.jmllantai AS jumlahlantai,
 						appraisal_pembanding_tb.kondisibangunan AS kondisibangunan,
+						appraisal_pembanding_tb.desa AS desa,
+						appraisal_pembanding_tb.kecamatan AS kecamatan,
+						appraisal_pembanding_tb.kota AS kota,
+						appraisal_pembanding_tb.provinsi AS provinsi,
 						appraisal_adjdp.indikasinilaitanahmpem AS nilai_pm,
 						appraisal_adjdp.bobot AS bobot,
 						appraisal_adjdp.adjtotal AS adjtotal,
@@ -163,7 +165,6 @@ else:
 					LEFT JOIN appraisal_pembanding_tb ON appraisal_dp.kodepembanding = appraisal_pembanding_tb.kodepembanding
 					LEFT JOIN appraisal_adjdp ON appraisal_dp.kodepembanding = appraisal_adjdp.kdpem
 					LEFT JOIN appraisaltb ON appraisal_dp.kdappraisalTB = appraisaltb.kodeappraisalTB
-					WHERE appraisaltb.statusorder = '4' AND appraisal_adjdp.adjtotalabs < '30'
 	"""
 
 	dp_full = pd.read_sql(DP_FULL_SQL,DB_CON)
@@ -395,7 +396,18 @@ def calc_adj_cosine_similarity(a,b):
 a = object_nonruko_features
 b = dp_nonruko_features
 
-cosine_similarity = calc_adj_cosine_similarity(a,b)
+mean_ab = (a+b)/2
+mean_ab = mean_ab[features_numerical+features_ordinal]
+unbiased_stdev_ab = np.sqrt((np.square((a-mean_ab))+np.square((b-mean_ab)))/1)
+unbiased_stdev_ab = unbiased_stdev_ab[features_numerical+features_ordinal]
+
+standardized_a = ((a[features_numerical+features_ordinal]-mean_ab)/unbiased_stdev_ab).fillna(value=0)
+standardized_a = standardized_a.join(a[a.columns.difference(features_numerical+features_ordinal)])
+standardized_b = ((b[features_numerical+features_ordinal]-mean_ab)/unbiased_stdev_ab).fillna(value=0)
+standardized_b = standardized_b.join(a[a.columns.difference(features_numerical+features_ordinal)])
+
+cosine_similarity = calc_cosine_similarity(standardized_a,standardized_b.swaplevel(0,1))
+# cosine_similarity = calc_adj_cosine_similarity(a,b)
 cosine_similarity = cosine_similarity.swaplevel(0,1)
 
 
@@ -417,8 +429,8 @@ market_value = market_value.join(object_nonruko['nilai_pm'].rename('original'))
 market_value['deviation'] = np.abs(market_value['original']-market_value['prediction'])/market_value['original']
 
 # Drop Anomaly and to be rejected if sum similarity <=1.5
-# market_value = market_value[market_value['deviation']<1]
-market_value = market_value[market_value['sum_similarity']>1.5]
+market_value = market_value[market_value['deviation']<1]
+# market_value = market_value[market_value['sum_similarity']>1.5]
 
 market_value['mae'] = metrics.mean_absolute_error(market_value['original'],market_value['prediction'])
 market_value['rmse'] = np.sqrt(metrics.mean_squared_error(market_value['original'],market_value['prediction']))
@@ -455,6 +467,15 @@ simple_market_value['mae'] = metrics.mean_absolute_error(simple_market_value['or
 simple_market_value['rmse'] = np.sqrt(metrics.mean_squared_error(simple_market_value['original'],simple_market_value['prediction']))
 simple_market_value['mape'] = metrics.mean_absolute_percentage_error(simple_market_value['original'],simple_market_value['prediction'])
 simple_market_value['r2'] = metrics.r2_score(simple_market_value['original'],simple_market_value['prediction'])
+
+# %%
+dr = (pd.DataFrame(dp_nonruko['nilai_pm']).join(standardized_b[features_numerical+features_ordinal]).join(dp_full['kota']))
+dr = dr[dr['kota']=='Jember']
+dr = dr.drop(['kota'],axis=1)
+fig = px.imshow(dr.corr().abs())
+fig.show()
+fig = px.scatter(x=dr['luas'],y=dr['nilai_pm'],trendline="ols",trendline_color_override='red',marginal_x='histogram', marginal_y='histogram')
+fig.show()
 
 # %%
 # Adjusted Cosine SImilarity
